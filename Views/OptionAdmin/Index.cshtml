@@ -1,0 +1,40 @@
+﻿@using DarkSky.Poll.Helpers
+@using Orchard.ContentManagement
+@{
+    Style.Include("admin.css", "admin.min.css");
+
+    var poll = Model.Poll;
+    var options = (IList<dynamic>)Model.Poll.Options;
+    Layout.Title = T("Options for \"{0}\"", poll.Title).ToString();
+    
+}
+<div class="manage">@Html.ActionLink(T("Add Option").ToString(), "Create", "Admin", new { id = "PollOption", area = "Contents", pollId = poll.Id, returnUrl = Request.Path }, new { @class = "button primaryAction" })</div>
+@using (Html.BeginFormAntiForgeryPost()) {
+	<fieldset>
+		<table class="items" summary="@T("This is a table of the polls in your application")">
+			<thead>
+				<tr>
+					<th>@T("ID")</th>
+					<th scope="col">@T("Text")&nbsp;&darr;</th>
+					<th scope="col">@T("Position")</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			@foreach (var option in options) {
+				<tr>
+					<td>@option.Id</td>
+					<td><a href="@Url.ItemEditUrlWithReturnUrl((IContent) option.Content)">@option.Text</a></td>
+					<td>@option.Position</td>
+					<td>
+						<a href="@Url.ItemEditUrlWithReturnUrl((IContent) option.Content)">@T("Edit")</a> |
+						@Html.ActionLink(T("Delete").ToString(), "Delete", new {pollId = poll.Id, id = option.Id}, new {itemprop = "RemoveUrl UnsafeUrl"})
+					</td>
+				</tr>
+			}
+		</table>
+	</fieldset>
+	<fieldset>
+		<a class="button" href="@Url.Action("Index", "PollAdmin")">@T("Back to Polls")</a>
+	</fieldset>
+}
+@Display(Model.Pager)

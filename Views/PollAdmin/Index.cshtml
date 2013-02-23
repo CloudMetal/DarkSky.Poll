@@ -1,0 +1,46 @@
+﻿@using DarkSky.Poll.Models
+@{
+    Style.Include("admin.css", "admin.min.css");
+    
+    var polls = (IList<dynamic>)Model.Polls;
+    Layout.Title = T("Polls").ToString();
+    
+}
+<div class="manage">@Html.ActionLink(T("Create Poll").ToString(), "Create", "Admin", new { id = "Poll", area = "Contents", returnUrl = Request.Path }, new { @class = "button primaryAction" })</div>
+@using (Html.BeginFormAntiForgeryPost()) {
+    <fieldset class="bulk-actions">
+        <label for="SearchField">@T("Search:")</label>
+        <input type="text" id="SearchField" name="q" class="search-term" value="@Model.SearchTerm"/>
+        <button type="submit" name="submit.Search" value="Search">@T("Search")</button>
+    </fieldset>
+    <fieldset>
+        <table class="items" summary="@T("This is a table of the polls in your application")">
+            <thead>
+                <tr>
+                    <th>@T("ID")</th>
+                    <th scope="col">@T("Title")&nbsp;&darr;</th>
+                    <th scope="col">@T("Submissions")</th>
+                    <th scope="col">@T("Created")</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            @foreach (var poll in polls) {
+                var content = (PollPart) poll.Content;
+                var displayName = poll.Title;
+                <tr>
+                    <td>@poll.Id</td>
+                    <td><a href="@Url.Action("Index", "OptionAdmin", new { area = "DarkSky.Poll", id = poll.Id })" title="@displayName">@displayName</a></td>
+                    <td>@poll.Submissions</td>
+                    <td>@poll.Created.ToString()</td>
+                    <td>
+                        @Html.ItemEditLinkWithReturnUrl(T("Properties").ToString(), content) |
+                        @Html.ActionLink(T("Options").ToString(), "Index", "OptionAdmin", new { area = "DarkSky.Poll", id = poll.Id }, null) |
+                        @Html.ActionLink(T("Delete").ToString(), "Delete", new {id = poll.Id}, new {itemprop = "RemoveUrl UnsafeUrl"})
+                    </td>
+                </tr>
+            }
+        </table>
+    </fieldset>
+}
+
+@Display(Model.Pager)

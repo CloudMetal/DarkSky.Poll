@@ -1,0 +1,10 @@
+﻿<Placement>
+	<Place Parts_PollOption_Edit="Content:0"
+		   Parts_PollWidget_Edit="Content:3" />
+
+	<Match DisplayType="Detail">
+		<Place Parts_Poll="Content:0" />
+		<Place Parts_PollWidget="Content:0" />
+	</Match>
+
+</Placement>

@@ -1,0 +1,13 @@
+﻿Name: DarkSky Poll
+AntiForgery: enabled
+Author: DarkSky Development
+Website: http://darkskydevelopment.net
+Version: 1.0
+OrchardVersion: 1.6
+Description: Provides a Poll widget and Poll management features.
+Features:
+    DarkSky.Poll:
+        Name: DarkSky Poll
+        Description: Provides a Poll widget and Poll management features.
+        Category: Statistics
+        Dependencies: Orchard.ContentPicker
